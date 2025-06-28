@@ -53,7 +53,7 @@ public class SecurityConfig {
         // 允許的來源 (您的前端)
         configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5500","http://192.168.190.131:5500","http://192.168.112.16:7380","http://192.168.112.16:7381","http://192.168.112.16:8380"));
         // 允許的方法
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         // 允許的標頭
         configuration.setAllowedHeaders(Arrays.asList("*"));
         // 允許傳遞憑證 (如 cookies)

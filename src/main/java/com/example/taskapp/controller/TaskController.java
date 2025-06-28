@@ -56,6 +56,23 @@ public class TaskController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<Task> updateTaskStatus(@PathVariable Long id, @RequestBody Task taskDetails, Authentication authentication) {
+        Long userId = getUserIdFromAuthentication(authentication);
+        return taskRepository.findById(id)
+            .map(task -> {
+                if (!task.getUserId().equals(userId)) {
+                    return new ResponseEntity<Task>(HttpStatus.FORBIDDEN);
+                }
+                task.setStatus(taskDetails.getStatus()); // 只更新 status
+                Task updatedTask = taskRepository.save(task);
+                return ResponseEntity.ok(updatedTask);
+            })
+            .orElse(ResponseEntity.notFound().build());
+    }
+
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTask(@PathVariable Long id, Authentication authentication) {
         Long userId = getUserIdFromAuthentication(authentication);
