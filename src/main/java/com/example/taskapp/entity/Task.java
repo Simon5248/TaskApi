@@ -3,7 +3,7 @@
 // ===================================================================================
 package com.example.taskapp.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -32,6 +32,7 @@ public class Task {
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
+    @org.springframework.format.annotation.DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp

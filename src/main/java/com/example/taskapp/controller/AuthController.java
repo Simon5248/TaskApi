@@ -16,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -31,13 +33,19 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
         if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message", "此 Email 已被註冊。"));
+             Map<String, Object> response = new HashMap<>();
+            response.put("message", "此 Email 已被註冊。");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
         User newUser = new User();
         newUser.setEmail(registerRequest.getEmail());
         newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         User savedUser = userRepository.save(newUser);
-        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "註冊成功！", "userId", savedUser.getId()));
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "註冊成功！");
+        response.put("userId", savedUser.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/login")
@@ -45,12 +53,18 @@ public class AuthController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "密碼錯誤。"));
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "密碼錯誤。");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         } catch (Exception e) {
              if (!userRepository.findByEmail(loginRequest.getEmail()).isPresent()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "此 Email 尚未註冊。"));
+                Map<String, Object> response = new HashMap<>();
+                response.put("message", "此 Email 尚未註冊。");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
              }
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "認證失敗。"));
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "認證失敗。");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
         
         final UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getEmail());

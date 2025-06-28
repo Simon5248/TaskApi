@@ -4,7 +4,7 @@
 // ===================================================================================
 package com.example.taskapp.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Data;
 
 @Entity
