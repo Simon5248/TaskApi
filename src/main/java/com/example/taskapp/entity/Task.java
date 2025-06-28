@@ -5,6 +5,8 @@ package com.example.taskapp.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -38,4 +40,8 @@ public class Task {
 
     @Column(nullable = false)
     private Long userId;
+
+    @Column(name = "due_date", nullable = true)
+    private LocalDate dueDate;
+
 }

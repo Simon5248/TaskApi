@@ -49,6 +49,7 @@ public class TaskController {
                     task.setDescription(taskDetails.getDescription());
                     task.setStatus(taskDetails.getStatus());
                     task.setPriority(taskDetails.getPriority());
+                    task.setDueDate(taskDetails.getDueDate());
                     Task updatedTask = taskRepository.save(task);
                     return ResponseEntity.ok(updatedTask);
                 })
